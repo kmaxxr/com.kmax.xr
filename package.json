@@ -1,0 +1,11 @@
+{
+  "name": "com.kmax.xr",
+  "version": "1.0.0",
+  "displayName": "Kmax XR",
+  "description": "Kmax XR plugin\nSupport Stereo Display and AR View on Standalone Windows",
+  "unity": "2019.4",
+  "author": {
+    "name": "Kmax Technologies",
+    "url": "http://www.kmax-arvr.com/"
+  }
+}
