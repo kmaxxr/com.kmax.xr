@@ -35,9 +35,11 @@ namespace KmaxXR
         [DllImport(dllName, CallingConvention = CallingConvention.StdCall)]
         internal static extern void GetProjection(KmaxMatrix camM, out KmaxMatrix km);
         [DllImport(dllName, CallingConvention = CallingConvention.StdCall)]
-        internal static extern void SetAngleFromUnity(float angle);
+        internal static extern void SetIpd(float ipd);
         [DllImport(dllName, CallingConvention = CallingConvention.StdCall)]
-        internal static extern void SetKmaxMatrixFromUnity(KmaxMatrix km);
+        internal static extern void SetCameraParameter(float zNear, float zFar);
+        [DllImport(dllName, CallingConvention = CallingConvention.StdCall)]
+        internal static extern void SetKmaxMatrix(KmaxMatrix km);
         [DllImport(dllName, CallingConvention = CallingConvention.StdCall)]
         internal static extern void GetScreenPhysical(ref float x, ref float y, ref float width, ref float height);
         [DllImport(dllName, CallingConvention = CallingConvention.StdCall)]
@@ -68,7 +70,9 @@ namespace KmaxXR
         [DllImport(dllName)]
         public static extern bool Pen_GetButtonDown(int id);
         [DllImport(dllName)]
-        public static extern void Pen_Shake(int time,int value);
+        internal static extern void Pen_Shake(int time, int value);
+        [DllImport(dllName)]
+        internal static extern void Pen_Light(int time, int value);
         [DllImport(dllName)]
         internal static extern float Pen_GetGyroValue1(uint id);
         [DllImport("user32.dll")]

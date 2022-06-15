@@ -74,14 +74,17 @@ namespace KmaxXR
 
         void Tracker()
         {
+            // 设置相机参数
+            KmaxPlugin.SetIpd(cams[0].stereoSeparation);
+            KmaxPlugin.SetCameraParameter(cams[0].nearClipPlane, cams[0].farClipPlane);
 
             KmaxVector3 pos;
             KmaxVector4 rot;
             KmaxPlugin.TrackerHandle(Time.deltaTime);
 
             KmaxPlugin.GetEyePose(StereoscopicEye.main, out pos, out rot);
-            transform.localPosition = pos.ToVector3();
-            transform.localRotation = rot.ToQuaternion();
+            cams[0].transform.localPosition = pos.ToVector3();
+            cams[0].transform.localRotation = rot.ToQuaternion();
             KmaxPlugin.GetEyePose(StereoscopicEye.left, out pos, out rot);
             cams[1].transform.localPosition = pos.ToVector3();
             cams[1].transform.localRotation = rot.ToQuaternion();

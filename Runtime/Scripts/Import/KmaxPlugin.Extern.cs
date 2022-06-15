@@ -3,6 +3,8 @@ using UnityEngine;
 
 namespace KmaxXR
 {
+    public enum PenShakePower { Weak = 1, Medium, Strong }
+    public enum PenLightColor { R = 1, G, B }
     public static partial class KmaxPlugin
     {
         public delegate void LogCallBack(int level, System.IntPtr msg, int len);
@@ -39,6 +41,30 @@ namespace KmaxXR
             KmaxVector3 rb;
             KmaxPlugin.GetViewWindow(type, out lt, out rt, out lb, out rb);
             return new KmaxRect(lt, lb, rt, rb);
+        }
+
+        /// <summary>
+        /// 使笔震动
+        /// </summary>
+        /// <param name="time">时长，单位为秒</param>
+        /// <param name="power">力度，可以是弱、中、强</param>
+        public static void PenShake(float time, PenShakePower power)
+        {
+            int t = Mathf.FloorToInt(time * 10);
+            int v = (int)power;
+            Pen_Shake(t, v);
+        }
+
+        /// <summary>
+        /// 使笔亮灯
+        /// </summary>
+        /// <param name="time">时长，单位为秒</param>
+        /// <param name="c">颜色，可以是红、绿、蓝</param>
+        public static void PenLight(float time, PenLightColor c)
+        {
+            int t = Mathf.FloorToInt(time);
+            int v = (int)c;
+            Pen_Light(t, v);
         }
     }
 }

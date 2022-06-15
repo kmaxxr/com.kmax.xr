@@ -13,8 +13,6 @@ namespace KmaxXR
     public class KmaxVR : MonoBehaviour
     {
 
-        private IntPtr GameHwnd;
-
         private static KmaxVR kmaxVR;
         public static KmaxVR Instance
         {
@@ -111,18 +109,18 @@ namespace KmaxXR
         /// </summary>
         public void OpenStereoScopic()
         {
-            GameHwnd = KmaxPlugin.GetFocus();
+            var gameHwnd = KmaxPlugin.GetFocus();
             UpdateWnd();
             if (csharpDelegate == null) csharpDelegate = new CSharpDelegate(UpdateWnd);
             KmaxPlugin.CallBackFromUnity(Marshal.GetFunctionPointerForDelegate(csharpDelegate));
-            KmaxPlugin.OpenStereoDisplay(GameHwnd);
+            KmaxPlugin.OpenStereoDisplay(gameHwnd);
             StartCoroutine("CallPluginAtEndOfFrames");
         }
 
         public void SetKmaxMatrix()
         {
             KmaxMatrix km = new KmaxMatrix(this.transform.localToWorldMatrix);
-            KmaxPlugin.SetKmaxMatrixFromUnity(km);
+            KmaxPlugin.SetKmaxMatrix(km);
         }
 
         private void UpdateWnd()

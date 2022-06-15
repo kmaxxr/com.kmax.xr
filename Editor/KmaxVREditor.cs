@@ -12,6 +12,7 @@ namespace KmaxXR
         public const int ViewWidth = 1920;
         public const int ViewHeight = 1080;
         private KmaxVR script;
+
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
@@ -19,12 +20,15 @@ namespace KmaxXR
             if (script == null)
                 script = target as KmaxVR;
             DrawDefaultInspector();
-            if (VRInEditor.Enable) EditorGUILayout.HelpBox("<size=12>Deselect Menu \"Kmax -> Enable Stereo Display\" to close Stereo Display</size>", MessageType.Info);
-            else EditorGUILayout.HelpBox("<size=12>Select Menu \"Kmax -> Enable Stereo Display\" to open Stereo Display</size>", MessageType.Info);
+            
+            GUI.skin.GetStyle("HelpBox").richText = true;
+            if (VRInEditor.Enable) EditorGUILayout.HelpBox("<size=12>Deselect Menu \"<color=green>Kmax -> Enable Stereo Display</color>\" to close Stereo Display</size>", MessageType.Info);
+            else EditorGUILayout.HelpBox("<size=12>Select Menu \"<color=green>Kmax -> Enable Stereo Display</color>\" to open Stereo Display</size>", MessageType.Info);
             string v3 = script.ScreenCenter.ToString("F3");
             EditorGUILayout.HelpBox($"Screen Center: {v3}", MessageType.None);
             CheckPlatform();
             CheckIsStereo();
+            
             serializedObject.ApplyModifiedProperties();
         }
 

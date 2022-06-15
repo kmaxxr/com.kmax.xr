@@ -7,7 +7,7 @@ using UnityEngine.UI;
 using System;
 namespace KmaxXR
 {
-    public class StylusControlManager : MonoBehaviour
+    public class Stylus : MonoBehaviour
     {
 
         public Camera eventCamera;
