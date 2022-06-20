@@ -53,13 +53,13 @@ namespace KmaxXR
         void OnEnable()
         {
             canvasList.Add(ThisCanvas);
-            PoseChangedNotify.Subscribe(PoseChangedNotify.DisplayOriention, FixPose);
+            KmaxVR.OrientationChanged += FixPose;
         }
 
         void OnDisable()
         {
             canvasList.Remove(ThisCanvas);
-            PoseChangedNotify.Unsubscribe(PoseChangedNotify.DisplayOriention, FixPose);
+            KmaxVR.OrientationChanged -= FixPose;
         }
 
         public void FixSize(Vector2 size)

@@ -43,25 +43,47 @@ namespace KmaxXR
         private delegate void CSharpDelegate();
         CSharpDelegate csharpDelegate;
 
+        public static event System.Action<UnityEngine.Pose> OrientationChanged;
 
         public Transform View => transform;
         public KmaxTracker kmaxTracker;
         [Range(0, 0.08f)]
         private float Ipd;
+        [SerializeField]
+        private bool syncOrientation = true;
+        public bool EnableOrientation { get => syncOrientation; set => syncOrientation = value; }
 
         private void Start()
         {
             KmaxPlugin.InitXR();
             if (kmaxTracker == null) kmaxTracker = FindObjectOfType<KmaxTracker>();
+            var ss = ScreenSize;
+            if (syncOrientation) SetOrientation(KmaxPlugin.GetOrientation());
         }
 
-#if UNITY_EDITOR
         private void OnValidate()
         {
             KmaxPlugin.ActiveLog();
             var ss = ScreenSize;
         }
-#endif
+
+        void Update()
+        {
+            var anglex = KmaxPlugin.GetOrientation();
+            if (syncOrientation && Mathf.Abs(VisualPC_X - anglex) > 0.1f)
+            {
+                SetOrientation(anglex, 0.1f);
+            }
+        }
+        
+        private float VisualPC_X = 0;
+        void SetOrientation(float anglex, float t = 1f)
+        {
+            VisualPC_X = Mathf.Lerp(VisualPC_X, anglex, t);
+            transform.localEulerAngles = Vector3.right * (VisualPC_X - 360 + 90);
+            OrientationChanged?.Invoke(new UnityEngine.Pose(ScreenCenter, transform.rotation));
+        }
+
         public bool ShowGizmos = true;
         private Color ViewSreenBorder = Color.green;
         private Color ViewWindowBorder = Color.gray;

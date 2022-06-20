@@ -12,11 +12,9 @@ namespace KmaxXR
 
         [SerializeField]
         private Transform pen;
-
-
+        
         private Transform viewAnchor;
         private KmaxMatrix kmaxMatrix;
-        private float VisualPC_X = 0;
         private PoseChangedNotify poseChanged;
 
         private RenderTexture renderTexture_r;
@@ -53,26 +51,26 @@ namespace KmaxXR
 
         bool validate => cams.Length >= 3 && pen != null;
 
+        
         void Update()
         {
 #if UNITY_EDITOR
             if (!validate) return;
             KmaxVR.Instance.SetKmaxMatrix();
 #endif
-            Tracker();
-#if UNITY_EDITOR
+            Track();
 
             cams[0].projectionMatrix = UpdateProjection(cams[0]);
+#if UNITY_EDITOR
             cams[1].projectionMatrix = UpdateProjection(cams[1]);
             cams[2].projectionMatrix = UpdateProjection(cams[2]);
             cams[1].Render();
             cams[2].Render();
-
 #endif
 
         }
 
-        void Tracker()
+        void Track()
         {
             // 设置相机参数
             KmaxPlugin.SetIpd(cams[0].stereoSeparation);
@@ -96,18 +94,6 @@ namespace KmaxXR
             pen.transform.localRotation = rot.ToQuaternion();
             pen.transform.Rotate(Vector3.right * 90);
 
-            Quaternion q = new Quaternion(
-                KmaxPlugin.Pen_GetGyroValue1(2),
-                -KmaxPlugin.Pen_GetGyroValue1(3),
-                -KmaxPlugin.Pen_GetGyroValue1(1),
-                KmaxPlugin.Pen_GetGyroValue1(0)
-            );
-            if (transform.parent != null && Mathf.Abs(VisualPC_X - q.eulerAngles.x) > 0.1f)
-            {
-                VisualPC_X = q.eulerAngles.x;
-                viewAnchor.localEulerAngles = Vector3.right * (VisualPC_X - 360 + 90);
-                poseChanged.Notify(new UnityEngine.Pose(viewAnchor.position, viewAnchor.rotation));
-            }
         }
 
         private void OnPreRender()

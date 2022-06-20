@@ -66,6 +66,23 @@ namespace KmaxXR
             int v = (int)c;
             Pen_Light(t, v);
         }
+
+        /// <summary>
+        /// 获取机身旋转角度
+        /// </summary>
+        /// <returns>角度</returns>
+        public static float GetOrientation()
+        {
+            Quaternion q = new Quaternion(
+                KmaxPlugin.Pen_GetGyroValue1(2),
+                -KmaxPlugin.Pen_GetGyroValue1(3),
+                -KmaxPlugin.Pen_GetGyroValue1(1),
+                KmaxPlugin.Pen_GetGyroValue1(0)
+            );
+            if (q.w == 0) return 270;
+            return q.eulerAngles.x;
+        }
+
     }
 }
 
