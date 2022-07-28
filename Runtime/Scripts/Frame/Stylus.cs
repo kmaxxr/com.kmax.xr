@@ -33,17 +33,22 @@ namespace KmaxXR
         private GameObject _stylusBeamObject = null;
         private LineRenderer _stylusBeamRenderer = null;
         private float _stylusBeamLength;//实际长度
-        private StylusState _stylusState = StylusState.Idle;
+        private CtrlState _stylusState = CtrlState.Idle;
         private GameObject _grabObject = null;
         private Vector3 _initialGrabOffset = Vector3.zero;
         private Quaternion _initialGrabRotation = Quaternion.identity;
         public float _initialGrabDistance = 0.0f;
+        private float _uiDistance = 1000f;
         private GameObject _scaleObject = null;
         private float orginScaleDistance = 0;
         private InteractableObject _interactableObject;
         private Vector3 orginScale;
 
         private StylusPose stylusPose = new StylusPose();
+
+        public CtrlState CState => _stylusState;
+        public Vector3 BeamEnd => stylusPose.Pos + stylusPose.Direction * _stylusBeamLength;
+
         private void Awake()
         {
             var prefab = CustomStylusBeam != null ? CustomStylusBeam : Resources.Load("StylusLine");
@@ -66,7 +71,7 @@ namespace KmaxXR
             }
             provider.Open();
         }
-        
+
         void OnDestroy()
         {
             provider.Close();
@@ -82,10 +87,12 @@ namespace KmaxXR
                 if (CurHitGameobjet != null)
                 {
                     _interactableObject = CurHitGameobjet.transform.GetComponentInParent<InteractableObject>();
+                    if (!_interactableObject.enabled) _interactableObject = null;
                     StylusBeamClickDown(CurHitGameobjet);
                 }
             }
-            ButtonHandler?.Invoke(new StylusButtonArgs{
+            ButtonHandler?.Invoke(new StylusButtonArgs
+            {
                 down = true,
                 key = StylusKey.Mid,
                 hitObj = CurHitGameobjet
@@ -106,7 +113,8 @@ namespace KmaxXR
                     StylusBeamClickNull();
                 }
             }
-            ButtonHandler?.Invoke(new StylusButtonArgs{
+            ButtonHandler?.Invoke(new StylusButtonArgs
+            {
                 down = false,
                 key = StylusKey.Mid,
                 hitObj = CurHitGameobjet
@@ -114,7 +122,8 @@ namespace KmaxXR
         }
         private void HandleLeftBtnDown()
         {
-            ButtonHandler?.Invoke(new StylusButtonArgs{
+            ButtonHandler?.Invoke(new StylusButtonArgs
+            {
                 down = true,
                 key = StylusKey.Left,
                 hitObj = CurHitGameobjet
@@ -122,7 +131,8 @@ namespace KmaxXR
         }
         private void HandleLeftBtnUp()
         {
-            ButtonHandler?.Invoke(new StylusButtonArgs{
+            ButtonHandler?.Invoke(new StylusButtonArgs
+            {
                 down = false,
                 key = StylusKey.Left,
                 hitObj = CurHitGameobjet
@@ -135,7 +145,8 @@ namespace KmaxXR
                 GoFacade.Instance.ButtonScalePress = true;
 
             }
-            ButtonHandler?.Invoke(new StylusButtonArgs{
+            ButtonHandler?.Invoke(new StylusButtonArgs
+            {
                 down = true,
                 key = StylusKey.Right,
                 hitObj = CurHitGameobjet
@@ -148,14 +159,15 @@ namespace KmaxXR
             {
                 GoFacade.Instance.ButtonScalePress = false;
             }
-            ButtonHandler?.Invoke(new StylusButtonArgs{
+            ButtonHandler?.Invoke(new StylusButtonArgs
+            {
                 down = false,
                 key = StylusKey.Right,
                 hitObj = CurHitGameobjet
             });
         }
         #endregion
-        
+
         void Process()
         {
             provider.Process();
@@ -166,7 +178,7 @@ namespace KmaxXR
             if (provider.GetKeyUp(StylusKey.Left)) HandleLeftBtnUp();
             if (provider.GetKeyUp(StylusKey.Right)) HandleRightBtnUp();
         }
-        
+
         void Update()
         {
             Process();
@@ -178,7 +190,7 @@ namespace KmaxXR
                 stylusPose.Rot = pen.rotation;
                 stylusPose.Direction = pen.forward;
                 GoFacade.Instance.StylusPose = stylusPose;
-                this.UpdateStylusBeam(GoFacade.Instance.StylusPose.Pos, GoFacade.Instance.StylusPose.Direction);
+                UpdateStylusBeam(stylusPose.Pos, stylusPose.Direction);
 
             }
         }
@@ -190,7 +202,7 @@ namespace KmaxXR
         private void UiControl(StylusPose pose)
         {
 
-            if (_stylusBeamObject.activeSelf && _stylusState == StylusState.Idle)
+            if (_stylusBeamObject.activeSelf && _stylusState == CtrlState.Idle)
             {
                 foreach (var c in UIFacade.Canvases)
                 {
@@ -246,6 +258,7 @@ namespace KmaxXR
             {
                 UIFacade.Ray2dPoint = new Vector2(9999, 9999);
                 UIFacade.Ray3dPoint = new Vector3(9999, 9999, 9999);
+                _uiDistance = StylusBeamLength;
             }
 
         }
@@ -309,11 +322,11 @@ namespace KmaxXR
             }
 
             var p = FocusPoint(gData[0].transform, direct);
-            var length = GetD(graphics[0].transform, direct);
+            var length = _uiDistance = GetD(graphics[0].transform, direct);
 
 
 
-            if ((GoFacade.Instance.StoGoLength != 0 && length > GoFacade.Instance.StoGoLength) || _stylusState != StylusState.Idle)
+            if ((GoFacade.Instance.StoGoLength != 0 && length > GoFacade.Instance.StoGoLength) || _stylusState != CtrlState.Idle)
             {
                 UIFacade.Ray2dPoint = new Vector2(9999, 9999);
                 UIFacade.Ray3dPoint = new Vector3(9999, 9999, 9999);
@@ -349,12 +362,12 @@ namespace KmaxXR
 
             switch (_stylusState)
             {
-                case StylusState.Idle:
+                case CtrlState.Idle:
                     {
                         RaycastHit hit;
                         if (Physics.Raycast(pose.Pos, pose.Direction, out hit, StylusBeamLength))
                         {
-
+                            if (hit.distance > _uiDistance) _interactableObject = null;
                             _stylusBeamLength = hit.distance;
                             GoFacade.Instance.StoGoLength = _stylusBeamLength;
                             CurHitGameobjet = hit.collider.gameObject;
@@ -365,8 +378,8 @@ namespace KmaxXR
                                 if (_interactableObject != null)
                                 {
 
-                                    this.BeginGrab(hit.collider.gameObject, hit.distance, pose.Pos, pose.Rot);
-                                    _stylusState = StylusState.Grab;
+                                    this.BeginGrab(CurHitGameobjet, hit.distance, pose.Pos, pose.Rot);
+                                    _stylusState = CtrlState.Grab;
 
                                 }
                             }
@@ -376,10 +389,8 @@ namespace KmaxXR
 
                                 if (_interactableObject != null)
                                 {
-                                    _scaleObject = hit.collider.gameObject;
-                                    orginScaleDistance = Vector3.Distance(_scaleObject.transform.position, pose.Pos);
-                                    orginScale = _scaleObject.transform.localScale;
-                                    _stylusState = StylusState.Scale;
+                                    BeginScale(CurHitGameobjet, pose.Pos);
+                                    _stylusState = CtrlState.Scale;
                                 }
                             }
 
@@ -420,27 +431,23 @@ namespace KmaxXR
                     }
                     break;
 
-                case StylusState.Grab:
+                case CtrlState.Grab:
                     {
 
                         this.UpdateGrab(pose.Pos, pose.Rot);
 
                         if (!isButtonPressed && _wasButtonPressed)
                         {
-                            _stylusState = StylusState.Idle;
-
-
+                            _stylusState = CtrlState.Idle;
                         }
-
-
                     }
                     break;
-                case StylusState.Scale:
+                case CtrlState.Scale:
                     {
-                        ScaleObject(_scaleObject, pose.Pos);
+                        ScaleObject(pose.Pos);
                         if (!isScalePressed && _wasScalePressed)
                         {
-                            _stylusState = StylusState.Idle;
+                            _stylusState = CtrlState.Idle;
                         }
                     }
                     break;
@@ -453,15 +460,24 @@ namespace KmaxXR
             _wasScalePressed = isScalePressed;
         }
 
-        private void ScaleObject(GameObject go, Vector3 inputPos)
+        protected void BeginScale(GameObject hitObj, Vector3 inputPos)
         {
+            _scaleObject = _interactableObject.IsWhole ? _interactableObject.gameObject : hitObj;
+            orginScaleDistance = Vector3.Distance(_scaleObject.transform.position, inputPos);
+            orginScale = _scaleObject.transform.localScale;
+        }
+
+        protected void ScaleObject(Vector3 inputPos)
+        {
+            if (!_interactableObject.canScale) return;
+            GameObject go = _scaleObject;
             float hitdistance = Vector3.Distance(go.transform.position, inputPos);
             float offset = hitdistance / orginScaleDistance;
 
             go.transform.localScale = orginScale * offset;
         }
 
-        private void BeginGrab(GameObject hitObject, float hitDistance, Vector3 inputPosition, Quaternion inputRotation)
+        protected void BeginGrab(GameObject hitObject, float hitDistance, Vector3 inputPosition, Quaternion inputRotation)
         {
 
             Vector3 inputEndPosition = inputPosition + (inputRotation * (Vector3.forward * hitDistance));
@@ -473,9 +489,9 @@ namespace KmaxXR
             _initialGrabDistance = hitDistance;
             if (_interactableObject.IsWhole)
             {
-                _initialGrabOffset = Quaternion.Inverse(hitObject.transform.root.rotation) * (hitObject.transform.root.position - inputEndPosition);
-                _initialGrabRotation = Quaternion.Inverse(inputRotation) * hitObject.transform.root.rotation;
-
+                var _initialTransfrom = _interactableObject.transform;
+                _initialGrabOffset = Quaternion.Inverse(_initialTransfrom.rotation) * (_initialTransfrom.position - inputEndPosition);
+                _initialGrabRotation = Quaternion.Inverse(inputRotation) * _initialTransfrom.rotation;
             }
             else
             {
@@ -484,7 +500,7 @@ namespace KmaxXR
             }
         }
 
-        private void UpdateGrab(Vector3 inputPosition, Quaternion inputRotation)
+        protected void UpdateGrab(Vector3 inputPosition, Quaternion inputRotation)
         {
             Vector3 inputEndPosition = inputPosition + (inputRotation * (Vector3.forward * _initialGrabDistance));
 
@@ -492,15 +508,13 @@ namespace KmaxXR
             Quaternion objectRotation = inputRotation * _initialGrabRotation;
             if (_interactableObject.IsWhole)
             {
-
-                _grabObject.transform.root.rotation = objectRotation;
+                var _initialTransfrom = _interactableObject.transform;
+                _initialTransfrom.rotation = objectRotation;
                 Vector3 objectPosition = inputEndPosition + (objectRotation * _initialGrabOffset);
-                _grabObject.transform.root.position = objectPosition;
-
+                _initialTransfrom.position = objectPosition;
             }
             else
             {
-
                 _grabObject.transform.rotation = objectRotation;
                 Vector3 objectPosition = inputEndPosition + (inputRotation * _initialGrabOffset);
                 _grabObject.transform.position = objectPosition;
@@ -530,7 +544,7 @@ namespace KmaxXR
             }
         }
 
-        private enum StylusState
+        public enum CtrlState
         {
             Idle = 0,
             Grab = 1,

@@ -56,14 +56,14 @@ namespace KmaxXR
         {
 #if UNITY_EDITOR
             if (!validate) return;
-            KmaxVR.Instance.SetKmaxMatrix();
 #endif
+            UpdateProjection();
             Track();
 
-            cams[0].projectionMatrix = UpdateProjection(cams[0]);
+            cams[0].projectionMatrix = GetProjection(cams[0]);
 #if UNITY_EDITOR
-            cams[1].projectionMatrix = UpdateProjection(cams[1]);
-            cams[2].projectionMatrix = UpdateProjection(cams[2]);
+            cams[1].projectionMatrix = GetProjection(cams[1]);
+            cams[2].projectionMatrix = GetProjection(cams[2]);
             cams[1].Render();
             cams[2].Render();
 #endif
@@ -96,20 +96,16 @@ namespace KmaxXR
 
         }
 
-        private void OnPreRender()
+        private void UpdateProjection()
         {
-
-#if !UNITY_EDITOR
             KmaxVR.Instance.SetKmaxMatrix();
             cams[0].SetStereoViewMatrix(Camera.StereoscopicEye.Left, cams[1].worldToCameraMatrix);
             cams[0].SetStereoViewMatrix(Camera.StereoscopicEye.Right, cams[2].worldToCameraMatrix);
-            cams[0].SetStereoProjectionMatrix(Camera.StereoscopicEye.Left, UpdateProjection(cams[1]));
-            cams[0].SetStereoProjectionMatrix(Camera.StereoscopicEye.Right, UpdateProjection(cams[2]));
-#endif
-
+            cams[0].SetStereoProjectionMatrix(Camera.StereoscopicEye.Left, GetProjection(cams[1]));
+            cams[0].SetStereoProjectionMatrix(Camera.StereoscopicEye.Right, GetProjection(cams[2]));
         }
 
-        Matrix4x4 UpdateProjection(Camera cam)
+        Matrix4x4 GetProjection(Camera cam)
         {
             KmaxMatrix camM = new KmaxMatrix(cam.worldToCameraMatrix);
             KmaxPlugin.GetProjection(camM, out kmaxMatrix);

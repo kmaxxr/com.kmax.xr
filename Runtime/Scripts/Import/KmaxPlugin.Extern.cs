@@ -83,6 +83,22 @@ namespace KmaxXR
             return q.eulerAngles.x;
         }
 
+        /// <summary>
+        /// 获取刚体姿态
+        /// </summary>
+        /// <param name="id">索引</param>
+        /// <param name="pose">姿态</param>
+        /// <returns>是否存在目标刚体</returns>
+        public static bool GetTrackerPose(int id, out UnityEngine.Pose pose)
+        {
+            KmaxVector3 pos;
+            KmaxVector4 rot;
+            int ret = GetTrackerPose(id, out pos, out rot);
+            pose.position = pos.ToVector3();
+            pose.rotation = rot.ToQuaternion();
+            return ret != 0;
+        }
+
     }
 }
 
