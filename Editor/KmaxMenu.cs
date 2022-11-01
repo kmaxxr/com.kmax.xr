@@ -106,7 +106,7 @@ namespace KmaxXR
             }
             Undo.RegisterCompleteObjectUndo(Selection.activeTransform, "Fix Canvas");
             fix.FixSize(vr.ScreenSize);
-            fix.FixPose(new UnityEngine.Pose(vr.ScreenCenter, vr.View.rotation));
+            fix.FixPose(new UnityEngine.Pose(vr.ScreenCenter, vr.transform.rotation));
             EditorUtility.SetDirty(Selection.activeTransform);
         }
 

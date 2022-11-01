@@ -181,7 +181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0328074dd656da048b60460455ea7a66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mat: {fileID: 2100000, guid: 64db6b8226f41fa4da2aae2035abc8bd, type: 2}
+  clipShader: {fileID: 4800000, guid: 22b5a40b4322e504a8273787712357a7, type: 3}
   depthCam: {fileID: 6053129508412562565}
   depthRt: {fileID: 8400000, guid: cffae2cda558b204d9d08876ab8db551, type: 2}
   arRt: {fileID: 8400000, guid: cbb7c48bac3a1ca4d80971e00b774db0, type: 2}
@@ -203,4 +203,3 @@ MonoBehaviour:
   rt: {fileID: 8400000, guid: cbb7c48bac3a1ca4d80971e00b774db0, type: 2}
   arCam: {fileID: 6053129510023269909}
   host: localhost
-  port: 11000

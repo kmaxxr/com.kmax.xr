@@ -7,13 +7,14 @@ namespace KmaxXR
 
     public class ARCamera : MonoBehaviour
     {
-        public Material mat;
+        private Material mat;
         private Transform window;
         private Camera cam;
         public Camera depthCam;
         public RenderTexture depthRt;
         public RenderTexture arRt;
-        public Shader depthShader;
+        [SerializeField] Shader clipShader;
+        [SerializeField] Shader depthShader;
         public float ImageW = 640;
         public float ImageH = 480;
 
@@ -21,34 +22,9 @@ namespace KmaxXR
         // Start is called before the first frame update
         void Start()
         {
-            window = KmaxVR.Instance.View;
             cam = this.GetComponent<Camera>();
-        }
-#if UNITY_EDITOR
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.S))
-            {
-                SaveRT(arRt, "image");
-                SaveRT(depthRt, "depth");
-            }
-        }
-#endif
-        private void SaveRT(RenderTexture rt, string name)
-        {
-            RenderTexture prev = RenderTexture.active;
-            RenderTexture.active = rt;
-            Texture2D png = new Texture2D(rt.width, rt.height, TextureFormat.ARGB32, false);
-            png.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
-            byte[] bytes = png.EncodeToPNG();
-            FileStream file = File.Open("C:/" + name + ".png", FileMode.Create);
-            BinaryWriter writer = new BinaryWriter(file);
-            writer.Write(bytes);
-            file.Close();
-            Texture2D.DestroyImmediate(png);
-            png = null;
-            RenderTexture.active = prev;
-
+            window = KmaxVR.Instance.VisualScreen;
+            mat = new Material(clipShader);
         }
 
         private void OnPreRender()
@@ -74,11 +50,7 @@ namespace KmaxXR
 
         private void OnRenderImage(RenderTexture source, RenderTexture destination)
         {
-
-
             Graphics.Blit(source, destination, mat);
-
-
         }
 
         public Vector4 GetUV(Vector3 pos)
@@ -90,13 +62,11 @@ namespace KmaxXR
             return uv;
         }
 
-        public void PoseCallback(Pose p)
+        public void PoseCallback(KmaxAR.Pose p)
         {
             double[] tvecArr = new double[3];
             double[] cam = new double[9];
             double[] dis = new double[5];
-
-
             double[] rotMatArr = new double[12];
             tvecArr = p.pos;
             rotMatArr = p.rot;
@@ -104,23 +74,21 @@ namespace KmaxXR
             dis = p.dist;
             Matrix4x4 camP = CalculateProjectionMatrixFromCameraMatrixValues((float)cam[0], (float)cam[4], (float)cam[2], (float)cam[5], ImageW, ImageH, 0.01f, 1000f);
 
-
             this.cam.projectionMatrix = camP;
             depthCam.projectionMatrix = camP;
-
 
             Matrix4x4 transformationM = new Matrix4x4(); // from OpenCV
             transformationM.SetRow(0, new Vector4((float)rotMatArr[0], (float)rotMatArr[1], (float)rotMatArr[2], (float)tvecArr[0]));
             transformationM.SetRow(1, new Vector4((float)rotMatArr[3], (float)rotMatArr[4], (float)rotMatArr[5], (float)tvecArr[1]));
             transformationM.SetRow(2, new Vector4((float)rotMatArr[6], (float)rotMatArr[7], (float)rotMatArr[8], (float)tvecArr[2]));
             transformationM.SetRow(3, new Vector4(0, 0, 0, 1));
-            Debug.Log("transformationM " + transformationM.ToString());
+            // Debug.Log("transformationM " + transformationM.ToString());
 
             Matrix4x4 invertZM = Matrix4x4.TRS(Vector3.zero, Quaternion.identity, new Vector3(1, 1, -1));
-            Debug.Log("invertZM " + invertZM.ToString());
+            // Debug.Log("invertZM " + invertZM.ToString());
 
             Matrix4x4 invertYM = Matrix4x4.TRS(Vector3.zero, Quaternion.identity, new Vector3(1, -1, 1));
-            Debug.Log("invertYM " + invertYM.ToString());
+            // Debug.Log("invertYM " + invertYM.ToString());
 
             // right-handed coordinates system (OpenCV) to left-handed one (Unity)
             Matrix4x4 ARM = invertYM * transformationM;
@@ -129,8 +97,7 @@ namespace KmaxXR
             ARM = ARM * invertZM;
 
             ARM = window.localToWorldMatrix * ARM.inverse;
-
-            Debug.Log("ARM " + ARM.ToString());
+            // Debug.Log("ARM " + ARM.ToString());
 
             SetTransformFromMatrix(this.cam.transform, ref ARM);
 

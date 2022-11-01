@@ -45,7 +45,24 @@ namespace KmaxXR
 
         public static event System.Action<UnityEngine.Pose> OrientationChanged;
 
-        public Transform View => transform;
+        private Transform visualScreen;
+        /// <summary>
+        /// 虚拟屏幕
+        /// </summary>
+        public Transform VisualScreen
+        {
+            get {
+                if (visualScreen == null)
+                {
+                    var go = new GameObject(nameof(visualScreen));
+                    visualScreen = go.transform;
+                    visualScreen.SetParent(transform);
+                    visualScreen.localPosition = screenOffset;
+                    visualScreen.localRotation = Quaternion.identity;
+                }
+                return visualScreen;
+            }
+        }
         public KmaxTracker kmaxTracker;
         [Range(0, 0.08f)]
         private float Ipd;

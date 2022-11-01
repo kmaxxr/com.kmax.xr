@@ -1,8 +1,5 @@
 ﻿using System;
-using System.IO;
 using System.Net;
-using System.Collections;
-using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
 using UnityEngine;
@@ -16,29 +13,6 @@ namespace KmaxXR
         Connect,
         GetPose,
         Start,
-    }
-    [Serializable]
-    public struct ARMessage
-    {
-        public AR_Action action;
-        public string body;
-        public override string ToString()
-        {
-            return JsonUtility.ToJson(this);
-        }
-    }
-
-    [Serializable]
-    public struct Pose
-    {
-        public double[] cam;
-        public double[] dist;
-        public double[] pos;
-        public double[] rot;
-        public override string ToString()
-        {
-            return JsonUtility.ToJson(this);
-        }
     }
 
     internal class ARMedium : IDisposable

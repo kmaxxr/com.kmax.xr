@@ -34,12 +34,6 @@ namespace KmaxXR
         void Awake()
         {
             poseChanged = PoseChangedNotify.AddNotify(PoseChangedNotify.DisplayOriention);
-        }
-
-        // Start is called before the first frame update
-        void Start()
-        {
-            viewAnchor = KmaxVR.Instance.View;
             kmaxMatrix = new KmaxMatrix(Matrix4x4.zero);
         }
 

@@ -89,5 +89,27 @@ namespace KmaxXR
             }
             client?.Dispose();
         }
+        [System.Serializable]
+        public struct ARMessage
+        {
+            public AR_Action action;
+            public string body;
+            public override string ToString()
+            {
+                return JsonUtility.ToJson(this);
+            }
+        }
+        [System.Serializable]
+        public struct Pose
+        {
+            public double[] cam;
+            public double[] dist;
+            public double[] pos;
+            public double[] rot;
+            public override string ToString()
+            {
+                return JsonUtility.ToJson(this);
+            }
+        }
     }
 }
