@@ -76,16 +76,16 @@ namespace KmaxXR
 
             KmaxPlugin.GetEyePose(StereoscopicEye.main, out pos, out rot);
             cams[0].transform.localPosition = pos.ToVector3();
-            cams[0].transform.localRotation = rot.ToQuaternion();
+            // cams[0].transform.localRotation = rot.ToQuaternion();
             KmaxPlugin.GetEyePose(StereoscopicEye.left, out pos, out rot);
             cams[1].transform.localPosition = pos.ToVector3();
-            cams[1].transform.localRotation = rot.ToQuaternion();
+            // cams[1].transform.localRotation = rot.ToQuaternion();
             KmaxPlugin.GetEyePose(StereoscopicEye.right, out pos, out rot);
             cams[2].transform.localPosition = pos.ToVector3();
-            cams[2].transform.localRotation = rot.ToQuaternion();
+            // cams[2].transform.localRotation = rot.ToQuaternion();
             KmaxPlugin.GetPenPose(out pos, out rot);
             pen.transform.localPosition = pos.ToVector3();
-            pen.transform.localRotation = rot.ToQuaternion();
+            // pen.transform.localRotation = rot.ToQuaternion();
             pen.transform.Rotate(Vector3.right * 90);
 
         }
