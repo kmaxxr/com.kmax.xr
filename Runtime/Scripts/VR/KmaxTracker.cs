@@ -15,7 +15,6 @@ namespace KmaxXR
         
         private Transform viewAnchor;
         private KmaxMatrix kmaxMatrix;
-        private PoseChangedNotify poseChanged;
 
         private RenderTexture renderTexture_r;
         public RenderTexture RenderTexture_r
@@ -31,16 +30,14 @@ namespace KmaxXR
             set { renderTexture_l = value; }
         }
 
-        void Awake()
+        void Start()
         {
-            poseChanged = PoseChangedNotify.AddNotify(PoseChangedNotify.DisplayOriention);
             kmaxMatrix = new KmaxMatrix(Matrix4x4.zero);
         }
 
         void OnDestroy()
         {
-            poseChanged?.Destroy();
-            poseChanged = null;
+            
         }
 
         bool validate => cams.Length >= 3 && pen != null;
@@ -85,8 +82,7 @@ namespace KmaxXR
             // cams[2].transform.localRotation = rot.ToQuaternion();
             KmaxPlugin.GetPenPose(out pos, out rot);
             pen.transform.localPosition = pos.ToVector3();
-            // pen.transform.localRotation = rot.ToQuaternion();
-            pen.transform.Rotate(Vector3.right * 90);
+            pen.transform.localRotation = rot.ToQuaternion();
 
         }
 

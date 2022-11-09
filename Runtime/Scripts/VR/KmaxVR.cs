@@ -43,8 +43,6 @@ namespace KmaxXR
         private delegate void CSharpDelegate();
         CSharpDelegate csharpDelegate;
 
-        public static event System.Action<UnityEngine.Pose> OrientationChanged;
-
         private Transform visualScreen;
         /// <summary>
         /// 虚拟屏幕
@@ -76,6 +74,7 @@ namespace KmaxXR
             if (kmaxTracker == null) kmaxTracker = FindObjectOfType<KmaxTracker>();
             var ss = ScreenSize;
             if (syncOrientation) SetOrientation(KmaxPlugin.GetOrientation());
+            GlobalEntity.Instance.Dispatch(KmaxVREvent.ScreenSize, ScreenSize);
         }
 
         private void OnValidate()
@@ -97,8 +96,8 @@ namespace KmaxXR
         void SetOrientation(float anglex, float t = 1f)
         {
             VisualPC_X = Mathf.Lerp(VisualPC_X, anglex, t);
-            transform.localEulerAngles = Vector3.right * (VisualPC_X - 360 + 90);
-            OrientationChanged?.Invoke(new UnityEngine.Pose(ScreenCenter, transform.rotation));
+            transform.localEulerAngles = Vector3.right * VisualPC_X;
+            GlobalEntity.Instance.Dispatch(KmaxVREvent.PoseChanged, new UnityEngine.Pose(ScreenCenter, transform.rotation));
         }
 
         public bool ShowGizmos = true;
@@ -190,5 +189,7 @@ namespace KmaxXR
         }
 
     }
+
+    public enum KmaxVREvent { PoseChanged, ScreenSize }
 
 }

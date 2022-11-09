@@ -79,8 +79,8 @@ namespace KmaxXR
                 -KmaxPlugin.Pen_GetGyroValue1(1),
                 KmaxPlugin.Pen_GetGyroValue1(0)
             );
-            if (q.w == 0) return 270;
-            return q.eulerAngles.x;
+            if (q.w == 0) return 0;
+            return Vector3.Angle(q * Vector3.up, Vector3.up);
         }
 
         /// <summary>

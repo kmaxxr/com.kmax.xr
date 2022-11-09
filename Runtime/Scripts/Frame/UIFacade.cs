@@ -53,13 +53,15 @@ namespace KmaxXR
         void OnEnable()
         {
             canvasList.Add(ThisCanvas);
-            KmaxVR.OrientationChanged += FixPose;
+            GlobalEntity.Instance.AddListener<Pose>(KmaxVREvent.PoseChanged, FixPose);
+            GlobalEntity.Instance.AddListener<Vector2>(KmaxVREvent.ScreenSize, FixSize);
         }
 
         void OnDisable()
         {
             canvasList.Remove(ThisCanvas);
-            KmaxVR.OrientationChanged -= FixPose;
+            GlobalEntity.Instance.RemoveListener<Pose>(KmaxVREvent.PoseChanged, FixPose);
+            GlobalEntity.Instance.RemoveListener<Vector2>(KmaxVREvent.ScreenSize, FixSize);
         }
 
         public void FixSize(Vector2 size)
