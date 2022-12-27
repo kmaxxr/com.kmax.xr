@@ -20,7 +20,7 @@ namespace KmaxXR
             if (script == null)
                 script = target as KmaxVR;
             DrawDefaultInspector();
-            
+
             GUI.skin.GetStyle("HelpBox").richText = true;
             if (VRInEditor.Enable) EditorGUILayout.HelpBox("<size=12>Deselect Menu \"<color=green>Kmax -> Enable Stereo Display</color>\" to close Stereo Display</size>", MessageType.Info);
             else EditorGUILayout.HelpBox("<size=12>Select Menu \"<color=green>Kmax -> Enable Stereo Display</color>\" to open Stereo Display</size>", MessageType.Info);
@@ -28,7 +28,7 @@ namespace KmaxXR
             EditorGUILayout.HelpBox($"Screen Center: {v3}", MessageType.None);
             CheckPlatform();
             CheckIsStereo();
-            
+
             serializedObject.ApplyModifiedProperties();
         }
 
@@ -63,6 +63,7 @@ namespace KmaxXR
         }
         private void CheckIsStereo()
         {
+#if UNITY_2019
             string[] vrSdks = PlayerSettings.GetVirtualRealitySDKs(
                 BuildTargetGroup.Standalone);
 
@@ -78,6 +79,7 @@ namespace KmaxXR
                     "head-mounted) to the list of Virtual Reality " +
                     "SDKs</color>", MessageType.Warning);
             }
+#endif
         }
 
     }

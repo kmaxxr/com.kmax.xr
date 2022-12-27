@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace KmaxXR
 {
-    // [ExecuteAlways]
+    [ExecuteAlways]
     public class KmaxTracker : MonoBehaviour
     {
         [SerializeField]
@@ -12,7 +12,7 @@ namespace KmaxXR
 
         [SerializeField]
         private Transform pen;
-        
+
         private Transform viewAnchor;
         private KmaxMatrix kmaxMatrix;
 
@@ -37,12 +37,12 @@ namespace KmaxXR
 
         void OnDestroy()
         {
-            
+
         }
 
         bool validate => cams.Length >= 3 && pen != null;
 
-        
+
         void Update()
         {
 #if UNITY_EDITOR
@@ -114,6 +114,20 @@ namespace KmaxXR
             return true;
         }
 
+        private readonly Rect Viewport = new Rect(0, 0, 1, 1);
+        public void GetFrustumCorners(float offset, Vector3[] outVS)
+        {
+            float dis = cams[0].transform.localPosition.z;
+            cams[0].CalculateFrustumCorners(
+                Viewport,
+                Mathf.Abs(dis) + offset,
+                Camera.MonoOrStereoscopicEye.Mono,
+                outVS);
+            for (int i = 0; i < outVS.Length; i++)
+            {
+                outVS[i] += transform.localPosition;
+            }
+        }
 
         private void OnDrawGizmos()
         {

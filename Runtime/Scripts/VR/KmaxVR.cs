@@ -103,6 +103,9 @@ namespace KmaxXR
         public bool ShowGizmos = true;
         private Color ViewSreenBorder = Color.green;
         private Color ViewWindowBorder = Color.gray;
+        private readonly Vector3[] corners = new Vector3[4];
+        private readonly Vector3[] cor_near = new Vector3[4];
+        private readonly Vector3[] cor_far = new Vector3[4];
         private void OnDrawGizmos()
         {
 #if UNITY_EDITOR
@@ -110,34 +113,37 @@ namespace KmaxXR
             SetKmaxMatrix();
 
             KmaxRect rect = KmaxPlugin.GetViewRect(ViewArea.Window);
-            Handles.color = ViewWindowBorder;
-            Handles.DrawPolyLine(rect.lt.ToVector3(), rect.rt.ToVector3(), rect.rb.ToVector3(), rect.lb.ToVector3(), rect.lt.ToVector3());
+            // Handles.color = ViewWindowBorder;
+            // Handles.DrawPolyLine(rect.lt.ToVector3(), rect.rt.ToVector3(), rect.rb.ToVector3(), rect.lb.ToVector3(), rect.lt.ToVector3());
 
             rect = KmaxPlugin.GetViewRect(ViewArea.Screen);
-            Handles.color = ViewSreenBorder;
-            Handles.DrawPolyLine(rect.lt.ToVector3(), rect.rt.ToVector3(), rect.rb.ToVector3(), rect.lb.ToVector3(), rect.lt.ToVector3());
+            // Handles.color = ViewSreenBorder;
+            // Handles.DrawPolyLine(rect.lt.ToVector3(), rect.rt.ToVector3(), rect.rb.ToVector3(), rect.lb.ToVector3(), rect.lt.ToVector3());
 
-            // rect = KmaxPlugin.GetViewRect(ViewArea.DisplayBorder);
-            // Gizmos.DrawLine(rect.lt.ToVector3(), rect.rt.ToVector3());
-            // Gizmos.DrawLine(rect.rt.ToVector3(), rect.rb.ToVector3());
-            // Gizmos.DrawLine(rect.rb.ToVector3(), rect.lb.ToVector3());
-            // Gizmos.DrawLine(rect.lb.ToVector3(), rect.lt.ToVector3());
-
-            Vector3 lt, rt, lb, rb;
-            lt = new Vector3(-screenSize.x / 2, screenSize.y / 2, 0);
-            rt = new Vector3(screenSize.x / 2, screenSize.y / 2, 0);
-            lb = new Vector3(-screenSize.x / 2, -screenSize.y / 2, 0);
-            rb = new Vector3(screenSize.x / 2, -screenSize.y / 2, 0);
-            // lt += (Vector3)(screenOffset);
-            // rt += (Vector3)(screenOffset);
-            // lb += (Vector3)(screenOffset);
-            // rb += (Vector3)(screenOffset);
-            // lt = transform.localToWorldMatrix.MultiplyPoint(lt);
-            // rt = transform.localToWorldMatrix.MultiplyPoint(rt);
-            // lb = transform.localToWorldMatrix.MultiplyPoint(lb);
-            // rb = transform.localToWorldMatrix.MultiplyPoint(rb);
-            // Handles.color = Color.red;
-            // Handles.DrawPolyLine(lt, rt, rb, lb, lt);
+            corners[0].Set(-screenSize.x / 2, screenSize.y / 2, 0);
+            corners[1].Set(-screenSize.x / 2, -screenSize.y / 2, 0);
+            corners[2].Set(screenSize.x / 2, -screenSize.y / 2, 0);
+            corners[3].Set(screenSize.x / 2, screenSize.y / 2, 0);
+            for (int i = 0; i < corners.Length; i++)
+            {
+                corners[i] += (Vector3)(screenOffset);
+            }
+            Handles.matrix = transform.localToWorldMatrix;
+            Handles.DrawSolidRectangleWithOutline(corners, Color.clear, ViewSreenBorder);
+            kmaxTracker.GetFrustumCorners(-0.13f, cor_near);
+            kmaxTracker.GetFrustumCorners(0.3f, cor_far);
+            void DrawComfortZone(Vector3[] startCorners, Vector3[] endCorners)
+            {
+                var lineColor = ViewWindowBorder;
+                Handles.DrawSolidRectangleWithOutline(startCorners, Color.clear, lineColor);
+                Handles.DrawSolidRectangleWithOutline(endCorners, Color.clear, lineColor);
+                Handles.color = lineColor;
+                for (int i = 0; i < startCorners.Length; ++i)
+                {
+                    Handles.DrawLine(startCorners[i], endCorners[i]);
+                }
+            }
+            DrawComfortZone(cor_near, cor_far);
 #endif
 
         }
