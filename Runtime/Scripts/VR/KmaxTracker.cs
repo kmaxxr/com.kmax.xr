@@ -52,7 +52,7 @@ namespace KmaxXR
             Track();
 
             cams[0].projectionMatrix = GetProjection(cams[0]);
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_2020_1_OR_NEWER
             cams[1].projectionMatrix = GetProjection(cams[1]);
             cams[2].projectionMatrix = GetProjection(cams[2]);
             cams[1].Render();

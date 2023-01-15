@@ -99,6 +99,8 @@ namespace KmaxXR
             return ret != 0;
         }
 
+        public const int RESULT_SUCCESS = 0;
+
     }
 }
 

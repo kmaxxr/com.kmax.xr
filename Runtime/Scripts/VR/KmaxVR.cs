@@ -49,7 +49,8 @@ namespace KmaxXR
         /// </summary>
         public Transform VisualScreen
         {
-            get {
+            get
+            {
                 if (visualScreen == null)
                 {
                     var go = new GameObject(nameof(visualScreen));
@@ -70,6 +71,10 @@ namespace KmaxXR
 
         private void Start()
         {
+#if UNITY_2020_1_OR_NEWER && !UNITY_EDITOR
+            KmaxPlugin.ActiveLog();
+            OpenStereoScopic();
+#endif
             KmaxPlugin.InitXR();
             if (kmaxTracker == null) kmaxTracker = FindObjectOfType<KmaxTracker>();
             var ss = ScreenSize;
@@ -91,7 +96,7 @@ namespace KmaxXR
                 SetOrientation(anglex, 0.1f);
             }
         }
-        
+
         private float VisualPC_X = 0;
         void SetOrientation(float anglex, float t = 1f)
         {
@@ -157,8 +162,10 @@ namespace KmaxXR
             UpdateWnd();
             if (csharpDelegate == null) csharpDelegate = new CSharpDelegate(UpdateWnd);
             KmaxPlugin.CallBackFromUnity(Marshal.GetFunctionPointerForDelegate(csharpDelegate));
-            KmaxPlugin.OpenStereoDisplay(gameHwnd);
-            StartCoroutine("CallPluginAtEndOfFrames");
+            if (KmaxPlugin.OpenStereoDisplay(gameHwnd) == KmaxPlugin.RESULT_SUCCESS)
+                StartCoroutine("CallPluginAtEndOfFrames");
+            else
+                Debug.LogError("OpenStereoScopic Failed");
         }
 
         public void SetKmaxMatrix()
