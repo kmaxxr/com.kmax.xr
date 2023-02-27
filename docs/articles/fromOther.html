@@ -1,0 +1,137 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>&#20174;&#20854;&#20182;&#24037;&#31243;&#36716;&#25104;Kmax&#24037;&#31243; </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="&#20174;&#20854;&#20182;&#24037;&#31243;&#36716;&#25104;Kmax&#24037;&#31243; ">
+    <meta name="generator" content="docfx 2.57.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="从其他工程转成kmax工程">从其他工程转成<code>Kmax</code>工程</h1>
+
+<h2 id="工程转换">工程转换</h2>
+<p>1.把项目从Android平台切换到PC平台<br>
+依次选择“File/Build Settings”，在Building Settings弹窗的Platform选择PC平台，点击“Switch Platform”切换成PC平台。</p>
+<p>2.移除<code>其他</code>的SDK(可选)</p>
+<p>打开工程目录，删除“Assests/PicoMobileSDK”文件夹，同时删除属于<code>Pico</code>插件Plugins下的文件夹。</p>
+<p>3.导入Kmax的SDK</p>
+<p>Kmax的SDK导入<a href="quickStart.html">请点这里</a>。</p>
+<h3 id="生成kmax需要的框架">生成Kmax需要的框架</h3>
+<p>在Hierarchy创建一个空物体，命名为Kmax，位置归零。在Hierarchy面板空白右键“Kmax/Add KmaxVR”，把生成在场景的KmaxVR物体放在Kmax下面，使其成为Kmax的子物体。在Kmax下面创建一个渲染UI的Canvas，Canvas的Render Mode选择World Space，Event Camera选择KmaxVR/MainCamera的相机。并在Canvas物体上添加UIFacade脚本。把Canvas的事件系统EventSystem物体上的StandaloneInputModule移除掉，并在EventSystem物体上添加StylusInputModule组件，在Hierarchy面板空白右键“Kmax/Fix Canvas”。</p>
+<h3 id="工程修改">工程修改</h3>
+<h4 id="1操作模型部分">1.操作模型部分</h4>
+<p>在你的工程里，一般来说，可以操作的模型，都挂上组件用来标识模型的可操作性，如下图示例工程用的PvrGrabbable脚本组件。</p>
+<p><img src="../images/Pico1.PNG" alt="图1"></p>
+<p>找到操作物体的管理脚本，找到输入代码，如下图示例工程用的PvrGrabber管理脚本。</p>
+<p><img src="../images/Pico2.PNG" alt="图2"></p>
+<p>将PvrGrabber在Update里的监听<code>Pico</code>的接口，改成你Kmax里你需要的按键的事件监听StylusControlManager.ButtonHandler。例如你需要监听的是触笔的中键，监听示例如下图：</p>
+<p><img src="../images/Pico3.PNG" alt="图3"></p>
+<p>注意：如果你的<code>Pico</code>操作模型(如手模型)添加了<code>Rigidbody</code>组件，在删除<code>Pico</code>的资源之后，也需要在你触笔笔尖添加上跟<code>Pico</code>模型一样值的<code>Rigidbody</code>组件，保持统一性。</p>
+<p>如果没有管理模型操作的脚本，你可能需要在你操作模型的脚本代码里监听<code>Pico</code>按键接口的地方，修改成Kmax里的触笔按键监听事件，具体按键事件<a href="fromEmpty.html">请参阅从空工程开始文档</a>。</p>
+<h4 id="2ui部分">2.UI部分</h4>
+<p>把所有UI面板放置到框架生成的Canvas下面，并做好自适应即可。<br>
+如果你的项目有多个Canvas，请确保每个Canvas上都挂有UIFacade脚本。</p>
+<h4 id="3其他">3.其他</h4>
+<p>如你在项目中还有一些调用Pico的按键接口的地方，你需要确定修改<code>Pico</code>按键对应于<code>Kmax</code>项目中的按键，进行修改，具体按键事件监听<a href="fromEmpty.html">请点这里</a></p>
+<h3 id="其他问题">其他问题</h3>
+<div class="TIP">
+<h5>Tip</h5>
+<p>如果你在转工程中还遇到其他问题，<a href="fromEmpty.html">请参阅从空工程开始文档</a></p>
+</div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

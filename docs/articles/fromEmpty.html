@@ -1,0 +1,148 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>&#20174;&#31354;&#24037;&#31243;&#24037;&#31243;&#24320;&#22987; </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="&#20174;&#31354;&#24037;&#31243;&#24037;&#31243;&#24320;&#22987; ">
+    <meta name="generator" content="docfx 2.57.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="从空工程工程开始">从空工程工程开始</h1>
+
+<h2 id="一导入kmax-sdk">一、导入Kmax SDK</h2>
+<p><a href="quickStart.html">请参阅快速开始</a></p>
+<h2 id="二创建场景">二、创建场景</h2>
+<h3 id="1添加kmaxvr对象">1、添加KmaxVR对象</h3>
+<ul>
+<li>移除或者不激活默认的<code>Main Camera</code></li>
+<li>在<code>Hierarchy</code>面板右键，选择<code>Kmax/Add KmaxVR</code></li>
+</ul>
+<h3 id="2添加射线笔输入支持">2、添加射线笔输入支持</h3>
+<ul>
+<li>创建一个或使用已有的<code>Event System</code></li>
+<li>在<code>Hierarchy</code>面板中选择<code>Event System</code>右键，选择<code>Kmax -&gt; Convert to StylusInputModule</code></li>
+</ul>
+<h3 id="3让ui吸附到屏幕上">3、让UI吸附到屏幕上</h3>
+<ul>
+<li>创建一个或使用已有的<code>Canvas</code></li>
+<li>把<code>Render Mode</code>修改为<code>World Space</code></li>
+<li>在<code>Hierarchy</code>面板中选择目标<code>Canvas</code>右键，选择<code>Kmax -&gt; Fix Canvas</code></li>
+</ul>
+<h2 id="unity2019及以下版本配置">Unity2019及以下版本配置</h2>
+<ul>
+<li>选择<code>File -&gt; Build Settings -&gt; Player Settings</code>打开<code>Project Settings面板</code>。</li>
+<li>在<code>Project Settings</code>面板，选择<code>Player -&gt; Other Settings -&gt; Configuration -&gt; Api Compatibility Level</code>中选择 <code>.Net 4.X</code>。</li>
+<li>在<code>XR Settings -&gt; Deprecated Settings -&gt; Virtual Reality Supported</code>中选择开启(需要加载片刻...)
+<ul>
+<li>删除<code>Virtual Reality SDKs</code>中的<code>Oculus</code>。</li>
+<li>删除<code>Virtual Reality SDKs</code>中的<code>OpenVR</code>。</li>
+<li>新增<code>Virtual Reality SDKs</code>中的<code>Stereo Display (non head-mounted)</code>。
+<img src="../images/Empty1.jpg" alt="效果图"></li>
+</ul>
+</li>
+</ul>
+<h2 id="unity2020及以上版本">Unity2020及以上版本</h2>
+<p>SDK内部完成立体显示的部分，不再依赖Unity的<code>Stereo Display (non head-mounted)</code><br>
+项目无需做额外的配置，场景中包含<code>KmaxVR</code>对象即可</p>
+<div class="WARNING">
+<h5>Warning</h5>
+<p>Unity2020开始已经<code>XR Settings</code>已经迁移至<code>XR Plug-in Management</code><br>
+<code>Stereo Display (non head-mounted)</code>不再受到支持</p>
+</div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,311 @@
+{
+  "homepages": [],
+  "source_base_path": "D:/tools/docfx_project",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/index.html",
+          "hash": "KgpjNmccaMIemvTrL/hMxhURoH9AUhEx7KU0z4B+kWo="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html",
+          "hash": "wnofHsyoYHZo89cbyGCGmg5evTb/6s8guyPM6+TM53Q="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/fromEmpty.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/fromEmpty.html",
+          "hash": "xyoNHteqP2rp21E1TSOCmcIqs3TF4XAdypyjLQMOEjg="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/howto/more.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/howto/more.html",
+          "hash": "PRz7FInN+k3wLOF9Kst7voISe9HEEkBTDKdYe0OsklU="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/howto/openVR.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/howto/openVR.html",
+          "hash": "JFAEXeNX5z983fdiCKwaboBugXWB/xFWkPcL6dAh2JY="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/howto/penEvent.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/howto/penEvent.html",
+          "hash": "PRz7FInN+k3wLOF9Kst7voISe9HEEkBTDKdYe0OsklU="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/howto/penSetting.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/howto/penSetting.html",
+          "hash": "PRz7FInN+k3wLOF9Kst7voISe9HEEkBTDKdYe0OsklU="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/howtoList.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/howtoList.html",
+          "hash": "nhsyCIst5gbJJ2z7zhTjlqgDU8NHOKdk9sNSDNZ3CHo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/intro.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/intro.html",
+          "hash": "F+50bVonztezdrGDpvZ6ledC/z4AYGCxPdFfAWlTcZE="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/quickStart.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/quickStart.html",
+          "hash": "T+FfCZ8XEzNUWMiP9KAKsdb8Q1xXutWggYJrfzgC2A8="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/toc.html",
+          "hash": "EUnHhVzUnbTE3d0ErbE8KbOr2lo10L8iU/66eSu6rQg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/whatIsNew.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/whatIsNew.html",
+          "hash": "wFZi+2+oaJ2fPju5L0yLEojHEzZ1+rq6RALBMPby5c4="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/Empty1.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "images/Empty1.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/Pico1.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/Pico1.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/Pico2.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/Pico2.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/Pico3.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "images/Pico3.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/howto1.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/howto1.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/overview.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/overview.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/pkg-manager.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/pkg-manager.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/sdk-menu.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/sdk-menu.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html",
+          "hash": "IelAvpHxcwxd0H8z6qvStb6n1rzzYYB0vgkmtAOYbo4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html",
+          "hash": "8pK+fpTqD0moFQbRuttjnsPFH/m3b6Gzk9UYlH6ajYY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    }
+  ],
+  "incremental_info": [
+    {
+      "status": {
+        "can_incremental": true,
+        "incrementalPhase": "build",
+        "total_file_count": 0,
+        "skipped_file_count": 0
+      },
+      "processors": {
+        "ConceptualDocumentProcessor": {
+          "can_incremental": true,
+          "incrementalPhase": "build",
+          "total_file_count": 11,
+          "skipped_file_count": 9
+        },
+        "ResourceDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        }
+      }
+    },
+    {
+      "status": {
+        "can_incremental": true,
+        "details": "Can support incremental post processing.",
+        "incrementalPhase": "postProcessing",
+        "total_file_count": 0,
+        "skipped_file_count": 0
+      },
+      "processors": {}
+    }
+  ],
+  "version_info": {},
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}
