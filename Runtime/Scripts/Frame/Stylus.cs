@@ -204,6 +204,7 @@ namespace KmaxXR
 
             if (_stylusBeamObject.activeSelf && _stylusState == CtrlState.Idle)
             {
+                UIFacade.perSelectedGraphics.Clear();
                 foreach (var c in UIFacade.Canvases)
                 {
                     Raycast(pose, c);
@@ -233,7 +234,7 @@ namespace KmaxXR
             //  Debug.Log("ttt" + pointerPosition);
             // Necessary for the event system
             int totalCount = foundGraphics.Count;
-            UIFacade.perSelectedGraphics.Clear();
+            // UIFacade.perSelectedGraphics.Clear();
             for (int i = 0; i < totalCount; ++i)
             {
                 Graphic graphic = foundGraphics[i];

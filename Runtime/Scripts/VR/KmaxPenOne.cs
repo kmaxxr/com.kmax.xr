@@ -31,7 +31,11 @@ namespace KmaxXR
             for (int i = 0; i < btnLastStates.Length; i++)
             {
                 btnLastStates[i] = btnStates[i];
+                #if UNITY_EDITOR
+                btnStates[i] = KmaxPlugin.Pen_GetButtonDown(i) || Input.GetMouseButton(i);
+                #else
                 btnStates[i] = KmaxPlugin.Pen_GetButtonDown(i);
+                #endif
             }
         }
 
