@@ -12,6 +12,8 @@ namespace KmaxXR
         private int height => resolution.y;
         [SerializeField, Tooltip("pixel size")]
         Vector2Int resolution = new Vector2Int(1920, 1080);
+        [SerializeField, Tooltip("auto fix size")]
+        bool syncScale = true;
         [SerializeField] bool syncOrientation = true;
         private Canvas canvas;
         /// <summary>
@@ -43,6 +45,7 @@ namespace KmaxXR
         /// 是否跟随屏幕旋转
         /// </summary>
         public bool SyncOrientation { get => syncOrientation; set => syncOrientation = value; }
+        public bool SyncScale { get => syncScale; set => syncScale = value; }
 
         void OnValidate()
         {
@@ -66,6 +69,7 @@ namespace KmaxXR
 
         public void FixSize(Vector2 size)
         {
+            if (!syncScale) return;
             RectTransform rt = transform as RectTransform;
             OnValidate();
             var scacleX = size.x / width;
