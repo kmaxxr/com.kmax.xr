@@ -7,6 +7,8 @@ namespace KmaxXR
     public class KmaxPenOne : StylusProvider
     {
         public bool LeftHand;
+        [Tooltip("Simulate a pen with your mouse")]
+        public bool MouseSimulate;
         public override void Open()
         {
             var ret = KmaxPlugin.Pen_Open();
@@ -32,7 +34,8 @@ namespace KmaxXR
             {
                 btnLastStates[i] = btnStates[i];
                 #if UNITY_EDITOR
-                btnStates[i] = KmaxPlugin.Pen_GetButtonDown(i) || Input.GetMouseButton(i);
+                btnStates[i] = KmaxPlugin.Pen_GetButtonDown(i);
+                if (MouseSimulate) btnStates[i] = btnStates[i] || Input.GetMouseButton(i);
                 #else
                 btnStates[i] = KmaxPlugin.Pen_GetButtonDown(i);
                 #endif

@@ -180,10 +180,12 @@ namespace KmaxXR
             float height = 0;
             KmaxPlugin.GetGameWindowSize(ref width, ref height);
             windowSize = new Vector2(width, height);
-            if (kmaxTracker.ChangeRT(width, height))
+            if (kmaxTracker.ChangeRT(width, height, out var format))
+            {
+                KmaxPlugin.SetTextureFormat(format);
                 KmaxPlugin.SetTextureFromUnity(kmaxTracker.RenderTexture_l.GetNativeTexturePtr(), kmaxTracker.RenderTexture_r.GetNativeTexturePtr());
+            }
         }
-
 
         private IEnumerator CallPluginAtEndOfFrames()
         {

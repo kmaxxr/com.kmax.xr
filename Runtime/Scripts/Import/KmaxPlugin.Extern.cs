@@ -101,6 +101,51 @@ namespace KmaxXR
 
         public const int RESULT_SUCCESS = 0;
 
+        internal static void SetTextureFormat(RenderTextureFormat format)
+        {
+            uint formatU = GetDXGIFormatForRenderTextureFormat(format, false);
+            SetTextureFormat(formatU);
+        }
+
+        public static uint GetDXGIFormatForRenderTextureFormat(
+            RenderTextureFormat renderTextureFormat, bool isSRGBFormat)
+        {
+            // If the DXGI format corresponding to a Unity render texture
+            // format is not know, the returned DXGI format will be 0, which
+            // corresponds to DXGI_FORMAT_UNKNOWN.
+            uint dxgiFormat = 0u;
+
+            switch (renderTextureFormat)
+            {
+                case RenderTextureFormat.ARGB32:
+                    dxgiFormat =
+                        isSRGBFormat ?
+                            // DXGI_FORMAT_R8G8B8A8_UNORM_SRGB
+                            29u :
+                            // DXGI_FORMAT_R8G8B8A8_UNORM
+                            28u;
+                    break;
+
+                case RenderTextureFormat.DefaultHDR:
+                    dxgiFormat =
+                            // DXGI_FORMAT_R16G16B16A16_FLOAT
+                            10u;
+                    break;
+
+                case RenderTextureFormat.ARGB64:
+                    dxgiFormat =
+                        isSRGBFormat ?
+                            // No corresponding sRGB DXGI format. Use
+                            // DXGI_FORMAT_UNKNOWN.
+                            0u :
+                            // DXGI_FORMAT_R16G16B16A16_UNORM
+                            11u;
+                    break;
+            }
+
+            return dxgiFormat;
+        }
+
     }
 }
 

@@ -18,6 +18,9 @@ namespace KmaxXR
         [DllImport(dllName, CallingConvention = CallingConvention.StdCall)]
         internal static extern int SetTextureFromUnity(System.IntPtr texture_l, System.IntPtr texture_r);
 
+        [DllImport(dllName, CallingConvention = CallingConvention.StdCall)]
+        internal static extern void SetTextureFormat(uint format);
+
         [DllImport(dllName)]
         internal static extern IntPtr GetRenderEventFunc();
 

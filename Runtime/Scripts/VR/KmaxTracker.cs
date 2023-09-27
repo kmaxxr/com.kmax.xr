@@ -33,6 +33,10 @@ namespace KmaxXR
         void Start()
         {
             kmaxMatrix = new KmaxMatrix(Matrix4x4.zero);
+            // float width = 1920;
+            // float height = 1080;
+            // KmaxPlugin.GetGameWindowSize(ref width, ref height);
+            // ChangeRT(width, height);
         }
 
         void OnDestroy()
@@ -103,13 +107,29 @@ namespace KmaxXR
             return kmaxMatrix.ToMatrix4x4();
         }
 
-
         public bool ChangeRT(float width, float height)
         {
-            if (width <= 0 || height <= 0) return false;
-            renderTexture_l = new RenderTexture((int)width, (int)height, 16, RenderTextureFormat.ARGB32);
+            return ChangeRT(width, height, out var format);
+        }
+
+        public bool ChangeRT(float width, float height, out RenderTextureFormat format)
+        {
+            if (width <= 0 || height <= 0)
+            {
+                format = default;
+                return false;
+            }
+
+            bool hdr = false;
+            foreach (var item in cams)
+            {
+                hdr = hdr || item.allowHDR;
+            }
+            // Debug.Log($"HDR enable {hdr}");
+            format = hdr ? RenderTextureFormat.DefaultHDR : RenderTextureFormat.ARGB32;
+            renderTexture_l = new RenderTexture((int)width, (int)height, 16, format);
             cams[1].targetTexture = renderTexture_l;
-            renderTexture_r = new RenderTexture((int)width, (int)height, 16, RenderTextureFormat.ARGB32);
+            renderTexture_r = new RenderTexture((int)width, (int)height, 16, format);
             cams[2].targetTexture = renderTexture_r;
             return true;
         }
@@ -133,7 +153,7 @@ namespace KmaxXR
         {
             if (viewAnchor != null)
             {
-                float dist = Vector3.Dot(transform.forward, (viewAnchor.transform.position - transform.position));
+                float dist = Vector3.Dot(transform.forward, viewAnchor.transform.position - transform.position);
                 Debug.DrawLine(transform.position, transform.position + transform.forward * dist, Color.yellow);
             }
 
