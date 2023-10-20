@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace KmaxXR
 {
-    [CreateAssetMenu(menuName = StylusProvider.MenuPrefix + nameof(KmaxPenOne), fileName = nameof(KmaxPenOne), order = 100)]
-    public class KmaxPenOne : StylusProvider
+    [CreateAssetMenu(menuName = StylusProvider.MenuPrefix + nameof(KmaxPen), fileName = nameof(KmaxPen), order = 100)]
+    public class KmaxPen : StylusProvider
     {
         public bool LeftHand;
         [Tooltip("Simulate a pen with your mouse")]
@@ -21,11 +21,11 @@ namespace KmaxXR
         /// <summary>
         /// 射线笔按钮状态(上一帧)
         /// </summary>
-        private bool[] btnLastStates = { false, false, false };
+        protected bool[] btnLastStates = { false, false, false };
         /// <summary>
         /// 射线笔按钮状态(当前帧)
         /// </summary>
-        private bool[] btnStates = { false, false, false };
+        protected bool[] btnStates = { false, false, false };
 
         public override void Process()
         {

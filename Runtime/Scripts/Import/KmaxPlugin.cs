@@ -49,12 +49,6 @@ namespace KmaxXR
         internal static extern void GetViewWindow(ViewArea type,out KmaxVector3 lt, out KmaxVector3 rt, out KmaxVector3 lb, out KmaxVector3 rb);
        
         [DllImport(dllName, CallingConvention = CallingConvention.StdCall)]
-        internal static extern int SendARTexture(IntPtr texture, int width, int height);
-        [DllImport(dllName)]
-        internal static extern int StartAR();
-        [DllImport(dllName)]
-        internal static extern int CloseAR();
-        [DllImport(dllName, CallingConvention = CallingConvention.StdCall)]
         internal static extern void TrackerHandle(float detaTime);
         [DllImport(dllName)]
         internal static extern void GetEyePose(StereoscopicEye eye,out KmaxVector3 pos, out KmaxVector4 rot);
@@ -74,6 +68,8 @@ namespace KmaxXR
         internal static extern bool Pen_Close();
         [DllImport(dllName)]
         public static extern bool Pen_GetButtonDown(int id);
+        [DllImport(dllName)]
+        public static extern bool Pen_GetButtonDown1(int id);
         [DllImport(dllName)]
         internal static extern void Pen_Shake(int time, int value);
         [DllImport(dllName)]

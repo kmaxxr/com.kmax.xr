@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using System;
 namespace KmaxXR
 {
+    [DefaultExecutionOrder(RigTracker.ExecOrder + 1)]
     public class Stylus : MonoBehaviour
     {
 

@@ -10,13 +10,15 @@ namespace KmaxXR
 {
     public class KmaxStylus : KmaxPointer
     {
+        [SerializeField, Tooltip("If you want multiple instances to coexist or want to customize an index, you can modify it")]
+        int specialId = 0;
         [SerializeField] StylusProvider provider;
         [SerializeField] GameObject point;
         [SerializeField] float rayLength = 1f;
         public const int StylusButtnCenter = 1 << 4;
         public const int StylusButtnLeft = StylusButtnCenter + 1;
         public const int StylusButtnRigth = StylusButtnCenter + 2;
-        public override int Id => StylusButtnCenter;
+        public override int Id => specialId > 0 ? specialId : StylusButtnCenter;
         
         [System.Serializable]
         public class RayCastEvent : UnityEvent<GameObject> {}

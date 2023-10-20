@@ -90,6 +90,7 @@ namespace KmaxXR
         static VRInEditor()
         {
             EditorApplication.playModeStateChanged += PlayModeStateHandler;
+            KmaxPlugin.ActiveLog();
         }
 
         private static void PlayModeStateHandler(PlayModeStateChange state)

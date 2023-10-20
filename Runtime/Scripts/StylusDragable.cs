@@ -13,7 +13,7 @@ namespace KmaxXR
 
         public void OnBeginDrag(PointerEventData eventData)
         {
-            if (eventData.pointerId != KmaxStylus.StylusButtnCenter) return;
+            if (!IsStylus(eventData)) return;
             // Debug.Log("Drag begin");
 
             var pointer = KmaxPointer.PointerById(eventData.pointerId);
@@ -41,7 +41,7 @@ namespace KmaxXR
 
         public void OnDrag(PointerEventData eventData)
         {
-            if (eventData.pointerId != KmaxStylus.StylusButtnCenter) return;
+            if (!IsStylus(eventData)) return;
             // Debug.Log("Draging");
             var pointer = KmaxPointer.PointerById(eventData.pointerId);
             var pose = pointer.EndpointPose;
@@ -52,13 +52,13 @@ namespace KmaxXR
 
             // Update the grab object's position.
             this.transform.position =
-                pose.position + 
+                pose.position +
                 (this.transform.rotation * this._initialGrabOffset);
         }
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            if (eventData.pointerId != KmaxStylus.StylusButtnCenter) return;
+            if (!IsStylus(eventData)) return;
             // Debug.Log("Drag end");
             var pointer = KmaxPointer.PointerById(eventData.pointerId);
             // If the grabbable object has a rigidbody component,
@@ -69,6 +69,16 @@ namespace KmaxXR
                 rigidbody.isKinematic = this._isKinematic;
             }
             pointer.GrabObject = null;
+        }
+
+        public static bool IsStylus(PointerEventData eventData)
+        {
+            return IsStylus(eventData.pointerId);
+        }
+
+        public static bool IsStylus(int pointerId)
+        {
+            return pointerId % KmaxStylus.StylusButtnCenter == 0;
         }
 
     }
