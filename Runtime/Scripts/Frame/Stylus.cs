@@ -144,7 +144,11 @@ namespace KmaxXR
             if (allowStylus)
             {
                 GoFacade.Instance.ButtonScalePress = true;
-
+                if (CurHitGameobjet != null)
+                {
+                    _interactableObject = CurHitGameobjet.transform.GetComponentInParent<InteractableObject>();
+                    if (!_interactableObject.enabled) _interactableObject = null;
+                }
             }
             ButtonHandler?.Invoke(new StylusButtonArgs
             {

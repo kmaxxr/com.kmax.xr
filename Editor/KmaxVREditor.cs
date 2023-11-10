@@ -24,8 +24,9 @@ namespace KmaxXR
             GUI.skin.GetStyle("HelpBox").richText = true;
             if (VRInEditor.Enable) EditorGUILayout.HelpBox("<size=12>Deselect Menu \"<color=green>Kmax -> Enable Stereo Display</color>\" to close Stereo Display</size>", MessageType.Info);
             else EditorGUILayout.HelpBox("<size=12>Select Menu \"<color=green>Kmax -> Enable Stereo Display</color>\" to open Stereo Display</size>", MessageType.Info);
+            string v2 = script.ScreenSize.ToString("F3");
             string v3 = script.ScreenCenter.ToString("F3");
-            EditorGUILayout.HelpBox($"Screen Center: {v3}", MessageType.None);
+            EditorGUILayout.HelpBox($"Screen Size: {v2}\nScreen Center: {v3}", MessageType.None);
             CheckPlatform();
             CheckIsStereo();
 
