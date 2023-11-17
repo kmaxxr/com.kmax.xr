@@ -34,7 +34,7 @@ namespace KmaxXR
         internal static extern int GetGameWindowSize(ref float width, ref float height);
 
         [DllImport(dllName, CallingConvention = CallingConvention.StdCall)]
-        internal static extern void CallBackFromUnity(IntPtr callback);
+        internal static extern void CallBackFromUnity(System.Action callback);
         [DllImport(dllName, CallingConvention = CallingConvention.StdCall)]
         internal static extern void GetProjection(KmaxMatrix camM, out KmaxMatrix km);
         [DllImport(dllName, CallingConvention = CallingConvention.StdCall)]

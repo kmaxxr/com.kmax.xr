@@ -9,6 +9,7 @@ namespace KmaxXR
     {
         public delegate void LogCallBack(int level, System.IntPtr msg, int len);
         internal static LogCallBack logger = new LogCallBack(LogFunc);
+        [AOT.MonoPInvokeCallback(typeof(LogCallBack))]
         private static void LogFunc(int level, System.IntPtr msg, int len)
         {
             string format = $"<color=green>KmaxXR</color> {Marshal.PtrToStringAnsi(msg, len)}";

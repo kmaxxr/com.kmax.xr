@@ -40,8 +40,10 @@ namespace KmaxXR
             }
         }
         public Vector3 ScreenCenter => transform.position + transform.up * screenOffset.y;
-        private delegate void CSharpDelegate();
-        CSharpDelegate csharpDelegate;
+        /// <summary>
+        /// native callback
+        /// </summary>
+        private static Action nativeCallback;
 
         private Transform visualScreen;
         /// <summary>
@@ -160,8 +162,8 @@ namespace KmaxXR
         {
             var gameHwnd = KmaxPlugin.GetFocus();
             UpdateWnd();
-            if (csharpDelegate == null) csharpDelegate = new CSharpDelegate(UpdateWnd);
-            KmaxPlugin.CallBackFromUnity(Marshal.GetFunctionPointerForDelegate(csharpDelegate));
+            if (nativeCallback == null) nativeCallback = new Action(sUpdateWnd);
+            KmaxPlugin.CallBackFromUnity(nativeCallback);
             if (KmaxPlugin.OpenStereoDisplay(gameHwnd) == KmaxPlugin.RESULT_SUCCESS)
                 StartCoroutine("CallPluginAtEndOfFrames");
             else
@@ -174,6 +176,11 @@ namespace KmaxXR
             KmaxPlugin.SetKmaxMatrix(km);
         }
 
+        [AOT.MonoPInvokeCallback(typeof(System.Action))]
+        private static void sUpdateWnd()
+        {
+            Instance?.UpdateWnd();
+        }
         private void UpdateWnd()
         {
             float width = 0;
@@ -199,7 +206,6 @@ namespace KmaxXR
         private void OnDestroy()
         {
             KmaxPlugin.UninitXR();
-            csharpDelegate = null;
             KmaxPlugin.ResetTracker();
         }
 
