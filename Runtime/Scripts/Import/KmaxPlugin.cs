@@ -56,6 +56,8 @@ namespace KmaxXR
         internal static extern void GetPenPose(out KmaxVector3 pos, out KmaxVector4 rot);
         [DllImport(dllName, CallingConvention = CallingConvention.StdCall)]
         internal static extern int GetTrackerPose(int id, out KmaxVector3 pos, out KmaxVector4 rot);
+        [DllImport(dllName, CallingConvention = CallingConvention.StdCall)]
+        internal static extern int GetTrackerStatus(int id);
         [DllImport(dllName)]
         internal static extern void ResetTracker();
         [DllImport(dllName, CallingConvention = CallingConvention.StdCall)]

@@ -12,6 +12,16 @@ namespace KmaxXR
 
         [SerializeField]
         private Transform pen;
+        /// <summary>
+        /// 超过3秒没有检测到眼部将触发眼部位置回归
+        /// </summary>
+        [SerializeField, Range(0, 60)]
+        private float WaitForEyeScends = 3f;
+        /// <summary>
+        /// 眼部追踪丢失回归的速度
+        /// </summary>
+        [SerializeField, Range(0, 60)]
+        private float missBackSpeed = 2f;
 
         private Transform viewAnchor;
         private KmaxMatrix kmaxMatrix;
@@ -65,6 +75,7 @@ namespace KmaxXR
 
         }
 
+        float loseTimer = 0f;
         void Track()
         {
             // 设置相机参数
@@ -77,13 +88,30 @@ namespace KmaxXR
 
             KmaxPlugin.GetEyePose(StereoscopicEye.main, out pos, out rot);
             cams[0].transform.localPosition = pos.ToVector3();
-            // cams[0].transform.localRotation = rot.ToQuaternion();
-            KmaxPlugin.GetEyePose(StereoscopicEye.left, out pos, out rot);
-            cams[1].transform.localPosition = pos.ToVector3();
-            // cams[1].transform.localRotation = rot.ToQuaternion();
-            KmaxPlugin.GetEyePose(StereoscopicEye.right, out pos, out rot);
-            cams[2].transform.localPosition = pos.ToVector3();
-            // cams[2].transform.localRotation = rot.ToQuaternion();
+            if (KmaxPlugin.GetTrackerVisible(0))
+            {
+                KmaxPlugin.GetEyePose(StereoscopicEye.left, out pos, out rot);
+                cams[1].transform.localPosition = pos.ToVector3();
+                // cams[1].transform.localRotation = rot.ToQuaternion();
+                KmaxPlugin.GetEyePose(StereoscopicEye.right, out pos, out rot);
+                cams[2].transform.localPosition = pos.ToVector3();
+                // cams[2].transform.localRotation = rot.ToQuaternion();
+                loseTimer = WaitForEyeScends;
+            }
+            else if (loseTimer > 0)
+            {
+                loseTimer -= Time.deltaTime;
+            }
+            else
+            {
+                float f = Time.deltaTime * missBackSpeed;
+                cams[1].transform.localPosition = Vector3.Lerp(
+                    cams[1].transform.localPosition,
+                    Vector3.zero, f);
+                cams[2].transform.localPosition = Vector3.Lerp(
+                    cams[2].transform.localPosition,
+                    Vector3.zero, f);
+            }
             KmaxPlugin.GetPenPose(out pos, out rot);
             pen.transform.localPosition = pos.ToVector3();
             pen.transform.localRotation = rot.ToQuaternion();

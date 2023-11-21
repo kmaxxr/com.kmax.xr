@@ -100,6 +100,16 @@ namespace KmaxXR
             return ret != 0;
         }
 
+        /// <summary>
+        /// 获取刚体可见性
+        /// </summary>
+        /// <param name="id">索引</param>
+        /// <returns>是否可见</returns>
+        public static bool GetTrackerVisible(int id)
+        {
+            return GetTrackerStatus(id) != 0;
+        }
+
         public const int RESULT_SUCCESS = 0;
 
         internal static void SetTextureFormat(RenderTextureFormat format)
