@@ -155,9 +155,9 @@ namespace KmaxXR
             }
             // Debug.Log($"HDR enable {hdr}");
             format = hdr ? RenderTextureFormat.DefaultHDR : RenderTextureFormat.ARGB32;
-            renderTexture_l = new RenderTexture((int)width, (int)height, 16, format);
+            renderTexture_l = new RenderTexture((int)width, (int)height, 24, format);
             cams[1].targetTexture = renderTexture_l;
-            renderTexture_r = new RenderTexture((int)width, (int)height, 16, format);
+            renderTexture_r = new RenderTexture((int)width, (int)height, 24, format);
             cams[2].targetTexture = renderTexture_r;
             return true;
         }
